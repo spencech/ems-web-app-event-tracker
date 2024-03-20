@@ -19,8 +19,8 @@ export class EventDispatcherService {
 
   public dispatch(event: IDispatcherEvent, name?: string):Promise<any> {
     const key = `${name ?? uuid()}.json`;
-    const namespace = event.namespace ? `${event.namespace}/` : "";
-    const request = this.buildRequest(`${namespace}${key}.json`);
+    const namespace = event.namespace ? `${event.namespace}%2F` : "";
+    const request = this.buildRequest(`${namespace}${key}`);
     return this.executePutRequest(request, event);
   }
 

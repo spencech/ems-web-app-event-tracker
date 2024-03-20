@@ -18,15 +18,13 @@ export class EventDispatcherService {
 
   public dispatch(event: any, name?: string):Promise<any> {
     const key = `${name ?? uuid()}.json`;
-    console.log(`key: ${key}`);
     const request = this.buildRequest(key);
-    console.log(`request: ${request}, jwt: ${this.jwt}`);
     return this.executePutRequest(request, event);
   }
 
   private executePutRequest(request: string, data: any, transform?: (input: any) => any, suppressErrors?: boolean, customHeaders?: any ): Promise<any> {
     const headers = this.headers(customHeaders || {});
-    return this.http.put(request, data, { headers, withCredentials: true }).pipe(
+    return this.http.put(request, data, { headers }).pipe(
       map((result: any) => 
         transform ?  transform(result) : result
       ),
@@ -49,8 +47,7 @@ export class EventDispatcherService {
 
   private headers(custom: any = {}): HttpHeaders {
     const headers = _.extend({ 
-          "Content-Type": "application/json",
-          "Authorization": empty(this.jwt) ? undefined : `Bearer ${this.jwt}` 
+          "Content-Type": "application/json"
        }, custom);
     return new HttpHeaders(headers);
   }

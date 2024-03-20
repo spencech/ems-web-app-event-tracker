@@ -13,24 +13,16 @@ import { trace, empty } from "ems-web-app-utils";
 export class EventDispatcherComponent implements OnInit {
 
   @Input("endpoint") endpoint!: string;
-  @Input("session") session?: any;
-  @Input("token") token?: string;
   @Input("sessionLimit") limit: number = 1800000; //30m
 
   private _queue: {event: IDispatcherEvent, name?: string}[] = [];
   private _processing: boolean = false;
-  private _tokenId!: string;
   private _sessionId!: string;
   
-  constructor(private service: EventDispatcherService) {
-   
-  }
+  constructor(private service: EventDispatcherService) {}
 
   ngOnInit(): void {
-    this.service.jwt = this.session?.idToken.jwtToken ?? this.token;
     this.service.endpoint = this.endpoint;
-    trace(this.service.jwt, this.session)
-    this._tokenId = this.session?.idToken.payload.jti ?? this.token;
     this._sessionId = this.determineSessionId();
     window.localStorage.setItem("ems_et_sessionId", this._sessionId);
     window.setInterval(this.updateSession, 1000);
@@ -59,7 +51,7 @@ export class EventDispatcherComponent implements OnInit {
   }
 
   private determineSessionId() {
-    const sessionTimestamp = parseInt(window.localStorage.getItem(this._tokenId) ?? "");
+    const sessionTimestamp = parseInt(window.localStorage.getItem("ems_et_sessionTime") ?? "");
     const sessionId = window.localStorage.getItem("ems_et_sessionId");
     const now = (new Date()).getTime();
 
@@ -76,7 +68,7 @@ export class EventDispatcherComponent implements OnInit {
 
   private updateSession = () => {
     const timestamp = (new Date()).getTime();
-    window.localStorage.setItem(this._tokenId, timestamp.toString());
+    window.localStorage.setItem("ems_et_sessionTime", timestamp.toString());
   }
 
 }

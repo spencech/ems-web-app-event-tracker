@@ -1,5 +1,9 @@
 {
-  "name": "event-dispatcher",
+  "name": "ems-web-app-event-tracker",
+  "author": "Chris Spence (https://educationalmediasolutions.com)",
+  "description": "This angular.io module includes a component and service that dispatch events to a given endpoint, while tracking a local session.",
+  "funding": "https://paypal.me/spencech",
+  "license": "MIT",
   "version": "0.0.4",
   "peerDependencies": {
     "@angular/common": "^13.2.0",
@@ -16,7 +20,28 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spencech/ems-web-app-event-tracker.git"
+  },
   "scripts": {
     "publish": "git add -A . && git commit --allow-empty -m 'prepublish npm package' && npm version patch && ng build event-dispatcher && cd dist && npm publish"
-  }
+  },
+  "keywords": [
+    "ems",
+    "educational media solutions",
+    "educational",
+    "media",
+    "solutions",
+    "web app",
+    "web application",
+    "cognito",
+    "aws",
+    "event",
+    "tracking",
+    "analytics",
+    "angular.io",
+    "angular",
+    "module"
+  ]
 }

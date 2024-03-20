@@ -18,7 +18,9 @@ export class EventDispatcherService {
 
   public dispatch(event: any, name?: string):Promise<any> {
     const key = `${name ?? uuid()}.json`;
+    console.log(`key: ${key}`);
     const request = this.buildRequest(key);
+    console.log(`request: ${request}, jwt: ${this.jwt}`);
     return this.executePutRequest(request, event);
   }
 

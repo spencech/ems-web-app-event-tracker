@@ -50,6 +50,8 @@ export class EventDispatcherComponent implements OnInit {
       return;
     }
 
+    console.log("dispatching", obj);
+
     await this.service.dispatch(obj.event, obj.name);
     this.processQueue(); 
   }

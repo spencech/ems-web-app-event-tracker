@@ -24,6 +24,7 @@ export class EventDispatcherComponent implements OnInit {
   constructor(private service: EventDispatcherService) {
     this.service.jwt = this.session?.idToken.jwtToken ?? this.token;
     this.service.endpoint = this.endpoint;
+    trace(this.service.jwt, this.session)
     this._tokenId = this.session?.idToken.payload.jti ?? this.token;
     this._sessionId = this.determineSessionId();
     window.localStorage.setItem("ems_et_sessionId", this._sessionId);

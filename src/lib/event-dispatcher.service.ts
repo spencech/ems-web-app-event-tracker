@@ -24,6 +24,16 @@ export class EventDispatcherService {
     return this.executePutRequest(request, event);
   }
 
+  public getEventTemplate(type: string): IDispatcherEvent {
+    return {
+        type,
+        agent: window.navigator.userAgent,
+        time: (new Date()).getTime(),
+        timestamp: (new Date()).toIsoString(),
+        properties: {}
+      }
+  }
+
   private executePutRequest(request: string, data: any, transform?: (input: any) => any, suppressErrors?: boolean, customHeaders?: any ): Promise<any> {
     const headers = this.headers(customHeaders || {});
     return this.http.put(request, data, { headers }).pipe(

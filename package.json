@@ -1,0 +1,22 @@
+{
+  "name": "event-dispatcher",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^13.2.0",
+    "@angular/core": "^13.2.0",
+    "@types/uuid": "^9.0.8",
+    "amazon-cognito-identity-js": "^5.2.10",
+    "aws-sdk": "^2.1171.0",
+    "cross-fetch": "^3.1.5",
+    "ems-web-app-utils": "^0.0.23",
+    "uuid": "^9.0.1",
+    "underscore": "^1.13.6",
+    "@types/underscore": "^1.11.15"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "scripts": {
+    "publish": "git add -A . && git commit --allow-empty -m 'prepublish npm package' && npm version patch && ng build event-dispatcher && cd dist && npm publish"
+  }
+}

@@ -22,15 +22,16 @@ export class EventDispatcherComponent implements OnInit {
   private _sessionId!: string;
   
   constructor(private service: EventDispatcherService) {
+   
+  }
+
+  ngOnInit(): void {
     this.service.jwt = this.session?.idToken.jwtToken ?? this.token;
     this.service.endpoint = this.endpoint;
     trace(this.service.jwt, this.session)
     this._tokenId = this.session?.idToken.payload.jti ?? this.token;
     this._sessionId = this.determineSessionId();
     window.localStorage.setItem("ems_et_sessionId", this._sessionId);
-  }
-
-  ngOnInit(): void {
     window.setInterval(this.updateSession, 1000);
   }
 
@@ -50,8 +51,6 @@ export class EventDispatcherComponent implements OnInit {
       this._processing = false;
       return;
     }
-
-    console.log("dispatching", obj);
 
     await this.service.dispatch(obj.event, obj.name);
     this.processQueue(); 

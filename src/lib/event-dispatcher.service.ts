@@ -29,7 +29,7 @@ export class EventDispatcherService {
         type,
         agent: window.navigator.userAgent,
         time: (new Date()).getTime(),
-        timestamp: (new Date()).toIsoString(),
+        timestamp: (new Date()).toISOString(),
         properties: {}
       }
   }

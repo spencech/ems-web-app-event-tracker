@@ -4,7 +4,7 @@
   "description": "This angular.io module includes a component and service that dispatch events to a given endpoint, while tracking a local session.",
   "funding": "https://paypal.me/spencech",
   "license": "MIT",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "peerDependencies": {
     "@angular/common": "^13.2.0",
     "@angular/core": "^13.2.0",

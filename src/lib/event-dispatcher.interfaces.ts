@@ -6,5 +6,5 @@ export interface IDispatcherEvent {
 	timestamp?: string,
 	time?: number,
 	agent?: string,
-	properties?: Record<string, any>
+	properties: Record<string, any>
 }

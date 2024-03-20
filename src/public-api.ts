@@ -5,3 +5,4 @@
 export * from './lib/event-dispatcher.service';
 export * from './lib/event-dispatcher.component';
 export * from './lib/event-dispatcher.module';
+export * from './lib/event-dispatcher.interfaces';

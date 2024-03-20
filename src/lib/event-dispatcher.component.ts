@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { EventDispatcherService } from "./event-dispatcher.service";
+import { IDispatcherEvent } from "./event-dispatcher.interfaces";
 import { v4 as uuid } from "uuid";
 import { trace, empty } from "ems-web-app-utils";
 
 @Component({
   selector: 'event-dispatcher',
-  template: '<div id="event-dispatcher"></div>',
+  template: '',
   styles: [
   ]
 })
@@ -16,7 +17,7 @@ export class EventDispatcherComponent implements OnInit {
   @Input("token") token?: string;
   @Input("sessionLimit") limit: number = 1800000; //30m
 
-  private _queue: any[] = [];
+  private _queue: {event: IDispatcherEvent, name?: string}[] = [];
   private _processing: boolean = false;
   private _tokenId!: string;
   private _sessionId!: string;
@@ -35,7 +36,7 @@ export class EventDispatcherComponent implements OnInit {
     window.setInterval(this.updateSession, 1000);
   }
 
-  public dispatch(event: any, name?: string): any {
+  public dispatch(event: IDispatcherEvent, name?: string): any {
     event.sessionId = this._sessionId;
     this._queue.push({ event, name });
     this.processQueue();

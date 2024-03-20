@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpRequest, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject, throwError, of } from 'rxjs';
 import { catchError, map, tap, take } from "rxjs/operators";
+import { IDispatcherEvent } from "./event-dispatcher.interfaces";
 import { v4 as uuid } from "uuid";
 import { trace, empty } from "ems-web-app-utils";
 import * as _ from "underscore";
@@ -16,9 +17,10 @@ export class EventDispatcherService {
 
   constructor(private http: HttpClient) {}
 
-  public dispatch(event: any, name?: string):Promise<any> {
+  public dispatch(event: IDispatcherEvent, name?: string):Promise<any> {
     const key = `${name ?? uuid()}.json`;
-    const request = this.buildRequest(key);
+    const namespace = event.namespace ? `${event.namespace}/` : "";
+    const request = this.buildRequest(`${namespace}${key}.json`);
     return this.executePutRequest(request, event);
   }
 

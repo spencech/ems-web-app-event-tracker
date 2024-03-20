@@ -18,7 +18,7 @@ export class EventDispatcherComponent implements OnInit {
 
   private _queue: any[] = [];
   private _processing: boolean = false;
-  private _tokenId: string;
+  private _tokenId!: string;
   private _sessionId!: string;
   
   constructor(private service: EventDispatcherService) {

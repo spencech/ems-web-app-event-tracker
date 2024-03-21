@@ -18,7 +18,7 @@ export class EventDispatcherService {
   constructor(private http: HttpClient) {}
 
   public dispatch(event: IDispatcherEvent, name?: string):Promise<any> {
-    const key = `${name ?? uuid()}.json`;
+    const key = `${name ?? event.id}.json`;
     const namespace = (event.namespace ? `${event.namespace}%2F` : "").replace(/:::/gim,"%2F");
     const request = this.buildRequest(`${namespace}${key}`);
     return this.executePutRequest(request, event);
@@ -26,6 +26,7 @@ export class EventDispatcherService {
 
   public getEventTemplate(type: string): IDispatcherEvent {
     return {
+        id: uuid(),
         type,
         agent: window.navigator.userAgent,
         time: (new Date()).getTime(),

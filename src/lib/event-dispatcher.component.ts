@@ -54,12 +54,10 @@ export class EventDispatcherComponent implements OnInit {
   }
 
   private onWindowFocus = (event:any) => {
-    trace("window active");
     this._inactive = false;
   }
 
   private onWindowBlur = (event:any) => {
-    trace("window inactive");
     this._inactive = true;
   }
 
@@ -88,8 +86,6 @@ export class EventDispatcherComponent implements OnInit {
       return sessionId!;
     }
 
-    trace("creating new session id");
-    
     return uuid();
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output } from '@angular/core';
 import { EventDispatcherService } from "./event-dispatcher.service";
 import { IDispatcherEvent } from "./event-dispatcher.interfaces";
 import { v4 as uuid } from "uuid";
-import { trace, empty } from "ems-web-app-utils";
+import { trace, empty, sleep } from "ems-web-app-utils";
 
 @Component({
   selector: 'event-dispatcher',
@@ -33,11 +33,25 @@ export class EventDispatcherComponent implements OnInit {
     window.setInterval(this.updateSession, 1000);
   }
 
-  public dispatch(event: IDispatcherEvent, name?: string): any {
+  public dispatch(event: IDispatcherEvent, name?: string, wait: boolean = false): IDispatcherEvent {
+    if(wait) return this.dispatchAsyncEvent(event, name);
     event.sessionId = this._sessionId;
     this._queue.push({ event, name });
     this.processQueue();
     return event;
+  }
+
+  public dispatchAsyncEvent(event: IDispatcherEvent, name?: string): Promise<IDispatcherEvent> {
+    return new Promise(async(resolve: (value: any) => void, reject: (value: any) => void) => {
+      event.sessionId = this._sessionId;
+      this._queue.push({ event, name });
+      this.processQueue();
+     
+      while(!event.processed) {
+        await sleep(250);
+      }
+      resolve(event);
+    });
   }
 
   private onWindowFocus = (event:any) => {
@@ -61,6 +75,7 @@ export class EventDispatcherComponent implements OnInit {
     }
 
     await this.service.dispatch(obj.event, obj.name);
+    obj.event.processed = true;
     this._processing = false;
     this.processQueue(); 
   }

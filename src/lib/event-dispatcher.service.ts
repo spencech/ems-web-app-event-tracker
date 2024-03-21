@@ -59,7 +59,8 @@ export class EventDispatcherService {
 
   private headers(custom: any = {}): HttpHeaders {
     const headers = _.extend({ 
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "Authorization": this.jwt
        }, custom);
     return new HttpHeaders(headers);
   }

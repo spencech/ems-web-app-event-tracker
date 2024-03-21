@@ -13,18 +13,23 @@ import { trace, empty } from "ems-web-app-utils";
 export class EventDispatcherComponent implements OnInit {
 
   @Input("endpoint") endpoint!: string;
-  @Input("sessionLimit") limit: number = 1800000; //30m
+  @Input("sessionLimit") limit: number = 30; //minutes
+  @Input("authtoken") token?: string;
 
   private _queue: {event: IDispatcherEvent, name?: string}[] = [];
   private _processing: boolean = false;
   private _sessionId!: string;
+  private _inactive: boolean = false;
   
   constructor(private service: EventDispatcherService) {}
 
   ngOnInit(): void {
     this.service.endpoint = this.endpoint;
+    this.service.jwt = this.token;
     this._sessionId = this.determineSessionId();
     window.localStorage.setItem("ems_et_sessionId", this._sessionId);
+    window.onfocus = (event:any) => this.onWindowFocus(event);
+    window.onblur =  (event:any) => this.onWindowBlur(event);
     window.setInterval(this.updateSession, 1000);
   }
 
@@ -33,6 +38,16 @@ export class EventDispatcherComponent implements OnInit {
     this._queue.push({ event, name });
     this.processQueue();
     return event;
+  }
+
+  private onWindowFocus = (event:any) => {
+    trace("window active");
+    this._inactive = false;
+  }
+
+  private onWindowBlur = (event:any) => {
+    trace("window inactive");
+    this._inactive = true;
   }
 
   private async processQueue() {
@@ -54,23 +69,26 @@ export class EventDispatcherComponent implements OnInit {
     const sessionTimestamp = parseInt(window.localStorage.getItem("ems_et_sessionTime") ?? "");
     const sessionId = window.localStorage.getItem("ems_et_sessionId");
     const now = (new Date()).getTime();
-
+e
     if(!isNaN(sessionTimestamp) && !empty(sessionId) && this.stillInSession(now, sessionTimestamp)) {
       return sessionId!;
     }
+
+    trace("creating new session id");
     
     return uuid();
   }
 
   private stillInSession(time1: number, time2: number) {
-    return Math.abs(time1 - time2) < this.limit;
+    return Math.abs(time1 - time2) < (this.limit * 1000 * 60);
   }
 
   private updateSession = () => {
-    //question: do we want to expire this after a period of inactivity? e.g., open tab.
+    if(this._inactive) return;
+    const sessionId = this.determineSessionId();
     const timestamp = (new Date()).getTime();
     window.localStorage.setItem("ems_et_sessionTime", timestamp.toString());
-    window.localStorage.setItem("ems_et_sessionId", this._sessionId);
+    window.localStorage.setItem("ems_et_sessionId", sessionId);
   }
 
 }

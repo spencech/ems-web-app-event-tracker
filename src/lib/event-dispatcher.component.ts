@@ -69,7 +69,7 @@ export class EventDispatcherComponent implements OnInit {
     const sessionTimestamp = parseInt(window.localStorage.getItem("ems_et_sessionTime") ?? "");
     const sessionId = window.localStorage.getItem("ems_et_sessionId");
     const now = (new Date()).getTime();
-e
+
     if(!isNaN(sessionTimestamp) && !empty(sessionId) && this.stillInSession(now, sessionTimestamp)) {
       return sessionId!;
     }

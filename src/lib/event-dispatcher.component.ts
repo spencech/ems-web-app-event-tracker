@@ -33,8 +33,7 @@ export class EventDispatcherComponent implements OnInit {
     window.setInterval(this.updateSession, 1000);
   }
 
-  public dispatch(event: IDispatcherEvent, name?: string, wait: boolean = false): IDispatcherEvent {
-    if(wait) return this.dispatchAsyncEvent(event, name);
+  public dispatch(event: IDispatcherEvent, name?: string): IDispatcherEvent {
     event.sessionId = this._sessionId;
     this._queue.push({ event, name });
     this.processQueue();

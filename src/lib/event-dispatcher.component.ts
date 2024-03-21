@@ -67,6 +67,7 @@ export class EventDispatcherComponent implements OnInit {
   }
 
   private updateSession = () => {
+    //question: do we want to expire this after a period of inactivity? e.g., open tab.
     const timestamp = (new Date()).getTime();
     window.localStorage.setItem("ems_et_sessionTime", timestamp.toString());
     window.localStorage.setItem("ems_et_sessionId", this._sessionId);

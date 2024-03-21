@@ -24,7 +24,6 @@ export class EventDispatcherComponent implements OnInit {
   ngOnInit(): void {
     this.service.endpoint = this.endpoint;
     this._sessionId = this.determineSessionId();
-    console.log("setting session id", this._sessionId);
     window.localStorage.setItem("ems_et_sessionId", this._sessionId);
     window.setInterval(this.updateSession, 1000);
   }
@@ -70,6 +69,7 @@ export class EventDispatcherComponent implements OnInit {
   private updateSession = () => {
     const timestamp = (new Date()).getTime();
     window.localStorage.setItem("ems_et_sessionTime", timestamp.toString());
+    window.localStorage.setItem("ems_et_sessionId", this._sessionId);
   }
 
 }
